@@ -261,7 +261,7 @@
             <input id="chat_sms" type="checkbox" style="width:auto;margin-top:3px;">
             <span>Tick to allow Jemima AI to text you about your enquiry and our services. Message and data rates may apply; reply STOP to opt out.</span>
           </label>
-          <div id="chat-turnstile" class="cf-turnstile" data-sitekey="0x4AAAAAADmk1_S3YhkvBvwZ" style="margin:4px auto;display:flex;justify-content:center;"></div>
+          <div id="chat-turnstile" class="cf-turnstile" data-sitekey="0x4AAAAAADmk1_S3YhkvBvwZ" data-callback="jemimaChatTurnstileCb" data-expired-callback="jemimaChatTurnstileExpired" data-error-callback="jemimaChatTurnstileExpired" style="margin:4px auto;display:flex;justify-content:center;"></div>
           <div>
             <button type="submit" id="chatGateSubmit" class="primary">Open the chat</button>
             <span id="chatGateMessage" class="message"></span>
@@ -834,8 +834,21 @@ function scrollToTailoredDemoForm(event) {
     });
   }
 
+  window.__chatTurnstileToken = "";
+  window.jemimaChatTurnstileCb = function(t){
+    window.__chatTurnstileToken = t || "";
+    var m = byId('chatGateMessage');
+    if (m && /verification/i.test(m.textContent)) m.textContent = '';
+  };
+  window.jemimaChatTurnstileExpired = function(){ window.__chatTurnstileToken = ""; };
+
   function turnstileToken(){
-    try { return window.turnstile ? (window.turnstile.getResponse() || '') : ''; } catch(e){ return ''; }
+    var t = window.__chatTurnstileToken || "";
+    if (!t && window.turnstile){
+      try { t = window.turnstile.getResponse(byId('chat-turnstile')) || ""; } catch(e){}
+      if (!t){ try { t = window.turnstile.getResponse() || ""; } catch(e){} }
+    }
+    return t;
   }
 
   byId('chatLeadForm').addEventListener('submit', function(ev){
