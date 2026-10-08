@@ -47,7 +47,7 @@
   /* ---------- Avatar stage ---------- */
   .stage {
     position: relative;
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 3 / 2;   /* matches Anam's video frame, so nothing is cropped */
     border-radius: var(--radius);
     overflow: hidden;
     background: #ddd url("https://jemima.ai/img/jemima-chat-image.png") center / cover no-repeat;
@@ -58,13 +58,6 @@
   }
   #anamVideo { opacity: 0; transition: opacity 400ms ease; }
   .stage.anam #anamVideo { opacity: 1; }
-  /* A square Anam stream is placed exactly over the matching part of the office background. */
-  #anamVideo.square {
-    left: 24.12%;
-    width: 56.25%;
-    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%);
-    mask-image: linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%);
-  }
   .stage video {
     position: absolute;
     inset: 0;
@@ -402,9 +395,9 @@
   const clean = (t) => (t || "").replace(/\[[^\]]*\]\s*/g, "").trim();
 
   /* ---------- Anam: lip-synced video of Jemima, voice and brain stay in ElevenLabs ---------- */
+  // Match the frame to Anam's video shape so her head and shoulders are never cropped.
   anamVideo.addEventListener("loadedmetadata", () => {
-    const r = anamVideo.videoWidth / Math.max(1, anamVideo.videoHeight);
-    anamVideo.classList.toggle("square", r > 0.9 && r < 1.1);
+    if (anamVideo.videoWidth && anamVideo.videoHeight) stage.style.aspectRatio = anamVideo.videoWidth + " / " + anamVideo.videoHeight;
   });
 
   async function startAnam() {
