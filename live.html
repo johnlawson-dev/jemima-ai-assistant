@@ -39,14 +39,22 @@
     display: grid;
     grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
     gap: 20px;
+    align-items: center;
   }
   @media (max-width: 820px) {
     .shell { grid-template-columns: 1fr; }
   }
 
-  /* ---------- Avatar stage ---------- */
+  /* ---------- Avatar: compact video card with name plate and caption below ---------- */
+  .videoCol {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
   .stage {
     position: relative;
+    width: min(420px, 100%);
     aspect-ratio: 3 / 2;   /* matches Anam's video frame, so nothing is cropped */
     border-radius: var(--radius);
     overflow: hidden;
@@ -70,15 +78,15 @@
 
   .badge {
     position: absolute;
-    top: 14px;
-    left: 14px;
+    top: 10px;
+    left: 10px;
     display: inline-flex;
     align-items: center;
     gap: 8px;
     padding: 6px 12px;
     border-radius: 999px;
     background: rgba(255, 255, 255, 0.92);
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
     backdrop-filter: blur(6px);
   }
@@ -92,17 +100,18 @@
   .badge[data-state="connecting"] .dot { background: #e6a700; animation: pulse 1s infinite; }
   @keyframes pulse { 50% { opacity: 0.3; } }
 
+  .plate { text-align: center; }
+  .plate strong { display: block; font-size: 18px; }
+  .plate span { color: var(--muted); font-size: 14px; }
   .caption {
-    position: absolute;
-    left: 50%;
-    bottom: 16px;
-    transform: translateX(-50%);
-    width: min(92%, 640px);
+    width: min(420px, 100%);
+    min-height: 3.2em;
     padding: 10px 16px;
     border-radius: 14px;
-    background: rgba(20, 16, 18, 0.72);
-    color: #fff;
-    font-size: 17px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    color: var(--ink);
+    font-size: 16px;
     line-height: 1.45;
     text-align: center;
     opacity: 0;
@@ -111,6 +120,7 @@
   }
   .caption.show { opacity: 1; }
   @media (max-width: 520px) { .caption { font-size: 15px; } }
+  @media (max-width: 820px) { .caption { min-height: 0; } .caption:not(.show) { display: none; } }
 
   /* ---------- Panel ---------- */
   .panel {
@@ -259,12 +269,15 @@
 <body data-anam-endpoint="https://jemima-anam.john-2c9.workers.dev">
 
 <main class="shell">
-  <section class="stage" id="stage" aria-label="Jemima">
-    <video id="idle" muted loop playsinline autoplay preload="auto" crossorigin="anonymous"></video>
-    <video id="anamVideo" autoplay playsinline></video>
-    <div class="badge" id="badge" data-state="disconnected"><span class="dot"></span><span id="badgeText">Ready to talk</span></div>
+  <div class="videoCol">
+    <section class="stage" id="stage" aria-label="Jemima">
+      <video id="idle" muted loop playsinline autoplay preload="auto" crossorigin="anonymous"></video>
+      <video id="anamVideo" autoplay playsinline></video>
+      <div class="badge" id="badge" data-state="disconnected"><span class="dot"></span><span id="badgeText">Ready to talk</span></div>
+    </section>
+    <div class="plate"><strong>Jemima</strong><span>John Lawson's AI assistant</span></div>
     <div class="caption" id="caption" aria-live="polite"></div>
-  </section>
+  </div>
 
   <section class="panel">
     <header>
@@ -420,7 +433,7 @@
       const isAgent = ev.role === "persona";
       if (isAgent) {
         setSpeaking(true);
-        setStatus("connected", "Jemima is speaking");
+        setStatus("connected", "Speaking");
         if (text) showCaption(text);
       } else if (typed.has(text) || !/[a-z0-9]/i.test(text)) {
         return;                                   // already shown when typed, or just "..." from silence
@@ -482,7 +495,7 @@
       onError: (message) => { addMsg("note", "Something went wrong: " + message); },
       onModeChange: ({ mode }) => {
         setSpeaking(mode === "speaking");
-        if (conv) setStatus("connected", mode === "speaking" ? "Jemima is speaking" : "Listening");
+        if (conv) setStatus("connected", mode === "speaking" ? "Speaking" : "Listening");
       },
       onMessage: ({ role, message }) => {
         message = clean(message);
