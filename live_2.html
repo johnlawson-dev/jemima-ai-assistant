@@ -1,0 +1,611 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Talk to Jemima</title>
+<meta name="description" content="A live voice conversation with Jemima, John Lawson's AI assistant.">
+<meta name="theme-color" content="#c2155a">
+<link rel="icon" href="https://jemima.ai/img/jemima-logo.png">
+<style>
+  :root {
+    --brand: #c2155a;
+    --brand-soft: #fbe7ef;
+    --ink: #1d1a1c;
+    --muted: #6b6468;
+    --bg: #f7f4f5;
+    --card: #ffffff;
+    --line: #e9e2e5;
+    --ok: #1f9d63;
+    --radius: 22px;
+    --vol: 0;      /* agent output volume 0..1, set from JS */
+    --mic: 0;      /* visitor mic volume 0..1, set from JS */
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 16px;
+  }
+  .shell {
+    width: 100%;
+    max-width: 980px;
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+    gap: 20px;
+  }
+  @media (max-width: 820px) {
+    .shell { grid-template-columns: 1fr; }
+  }
+
+  /* ---------- Avatar stage ---------- */
+  .stage {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: #ddd url("https://jemima.ai/img/jemima-chat-image.png") center / cover no-repeat;
+    box-shadow:
+      0 0 0 calc(2px + var(--vol) * 6px) rgba(194, 21, 90, calc(0.15 + var(--vol) * 0.5)),
+      0 18px 50px rgba(29, 26, 28, 0.18);
+    transition: box-shadow 80ms linear;
+  }
+  #anamVideo { opacity: 0; transition: opacity 400ms ease; }
+  .stage.anam #anamVideo { opacity: 1; }
+  /* A square Anam stream is placed exactly over the matching part of the office background. */
+  #anamVideo.square {
+    left: 24.12%;
+    width: 56.25%;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%);
+    mask-image: linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%);
+  }
+  .stage video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .badge {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.92);
+    font-size: 14px;
+    font-weight: 600;
+    backdrop-filter: blur(6px);
+  }
+  .dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #b7adb2;
+  }
+  .badge[data-state="connected"] .dot { background: var(--ok); box-shadow: 0 0 0 4px rgba(31, 157, 99, 0.18); }
+  .badge[data-state="connecting"] .dot { background: #e6a700; animation: pulse 1s infinite; }
+  @keyframes pulse { 50% { opacity: 0.3; } }
+
+  .caption {
+    position: absolute;
+    left: 50%;
+    bottom: 16px;
+    transform: translateX(-50%);
+    width: min(92%, 640px);
+    padding: 10px 16px;
+    border-radius: 14px;
+    background: rgba(20, 16, 18, 0.72);
+    color: #fff;
+    font-size: 17px;
+    line-height: 1.45;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 200ms ease;
+    pointer-events: none;
+  }
+  .caption.show { opacity: 1; }
+  @media (max-width: 520px) { .caption { font-size: 15px; } }
+
+  /* ---------- Panel ---------- */
+  .panel {
+    background: var(--card);
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    min-height: 420px;
+    max-height: 640px;
+    overflow: hidden;
+  }
+  .panel header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 18px;
+    border-bottom: 1px solid var(--line);
+  }
+  .panel header img {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  .panel h1 { font-size: 18px; margin: 0; }
+  .panel header p { margin: 2px 0 0; font-size: 14px; color: var(--muted); }
+
+  .log {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  .msg { max-width: 88%; padding: 10px 14px; border-radius: 16px; }
+  .msg.agent { background: var(--brand-soft); align-self: flex-start; border-bottom-left-radius: 6px; }
+  .msg.user { background: #f0eeef; align-self: flex-end; border-bottom-right-radius: 6px; }
+  .msg.note { align-self: center; background: none; color: var(--muted); font-size: 14px; text-align: center; padding: 4px; }
+  .linkcard {
+    align-self: flex-start;
+    display: inline-block;
+    padding: 10px 16px;
+    border-radius: 12px;
+    background: var(--brand);
+    color: #fff;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .starters { display: flex; flex-wrap: wrap; gap: 8px; }
+  .starters button {
+    font: inherit;
+    font-size: 14px;
+    padding: 8px 12px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: #fff;
+    cursor: pointer;
+  }
+  .starters button:hover { border-color: var(--brand); color: var(--brand); }
+
+  .controls {
+    border-top: 1px solid var(--line);
+    padding: 14px 18px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .row { display: flex; gap: 10px; align-items: center; }
+  .primary {
+    flex: 1;
+    font: inherit;
+    font-size: 17px;
+    font-weight: 700;
+    padding: 14px 18px;
+    border-radius: 14px;
+    border: 0;
+    background: var(--brand);
+    color: #fff;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  .primary:disabled { opacity: 0.6; cursor: progress; }
+  .primary.end { background: var(--ink); }
+  .icon-btn {
+    width: 50px;
+    height: 50px;
+    border-radius: 14px;
+    border: 1px solid var(--line);
+    background: #fff;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  .icon-btn[aria-pressed="true"] { background: #fdecec; border-color: #e7b3b3; }
+  .icon-btn::after {
+    content: "";
+    position: absolute;
+    inset: -3px;
+    border-radius: 16px;
+    border: 2px solid var(--brand);
+    opacity: calc(var(--mic) * 1.6);
+    transform: scale(calc(1 + var(--mic) * 0.18));
+    transition: transform 70ms linear, opacity 70ms linear;
+    pointer-events: none;
+  }
+  .icon-btn[hidden], .primary[hidden] { display: none; }
+
+  form.say { display: flex; gap: 8px; }
+  form.say input {
+    flex: 1;
+    font: inherit;
+    font-size: 16px;
+    padding: 11px 14px;
+    border-radius: 12px;
+    border: 1px solid var(--line);
+    min-width: 0;
+  }
+  form.say button {
+    font: inherit;
+    font-weight: 600;
+    padding: 0 16px;
+    border-radius: 12px;
+    border: 1px solid var(--line);
+    background: #fff;
+    cursor: pointer;
+  }
+  .fine { font-size: 13px; color: var(--muted); margin: 0; }
+  .fine a { color: var(--brand); }
+
+  /* ---------- Setup (only shown when no agent ID is configured) ---------- */
+  .setup { padding: 18px; display: grid; gap: 10px; font-size: 15px; }
+  .setup input { font: inherit; padding: 11px 14px; border: 1px solid var(--line); border-radius: 12px; }
+  .setup[hidden] { display: none; }
+</style>
+</head>
+<body data-anam-endpoint="https://jemima-anam.john-2c9.workers.dev">
+
+<main class="shell">
+  <section class="stage" id="stage" aria-label="Jemima">
+    <video id="idle" muted loop playsinline autoplay preload="auto" crossorigin="anonymous"></video>
+    <video id="anamVideo" autoplay playsinline></video>
+    <div class="badge" id="badge" data-state="disconnected"><span class="dot"></span><span id="badgeText">Ready to talk</span></div>
+    <div class="caption" id="caption" aria-live="polite"></div>
+  </section>
+
+  <section class="panel">
+    <header>
+      <img src="https://jemima.ai/img/jemima-chat-image.png" alt="">
+      <div>
+        <h1>Talk to Jemima</h1>
+        <p>John Lawson's AI assistant. Ask out loud or type.</p>
+      </div>
+    </header>
+
+    <div class="setup" id="setup" hidden>
+      <strong>Connect your ElevenLabs agent</strong>
+      <span>Paste the agent ID from the ElevenLabs Agents dashboard. It is saved in this browser only.</span>
+      <input id="agentInput" autocomplete="off" spellcheck="false" aria-label="ElevenLabs agent ID">
+      <button class="primary" id="saveAgent" type="button">Save agent</button>
+    </div>
+
+    <div class="log" id="log">
+      <div class="msg agent">Hi, I'm Jemima. Tap <strong>Start talking</strong> and just speak. You can interrupt me any time.</div>
+      <div class="starters" id="starters">
+        <button type="button">What does a normal day look like for you?</button>
+        <button type="button">How do you help John?</button>
+        <button type="button">Can I book a call with John?</button>
+      </div>
+    </div>
+
+    <div class="controls">
+      <div class="row">
+        <button class="primary" id="startBtn" type="button">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3Zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-2.08A7 7 0 0 0 19 12h-2Z"/></svg>
+          <span id="startLabel">Start talking</span>
+        </button>
+        <button class="icon-btn" id="muteBtn" type="button" aria-pressed="false" aria-label="Mute microphone" hidden>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path id="micPath" d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3Zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-2.08A7 7 0 0 0 19 12h-2Z"/></svg>
+        </button>
+      </div>
+      <form class="say" id="sayForm" autocomplete="off">
+        <input id="sayInput" aria-label="Type a message to Jemima" placeholder="Prefer to type? Ask here">
+        <button type="submit">Send</button>
+      </form>
+      <p class="fine">Uses your microphone. Conversations are handled by an AI assistant and may be recorded to improve the service. <a href="https://jemima.ai/privacy.html" target="_blank" rel="noopener">Privacy Policy</a></p>
+    </div>
+  </section>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@elevenlabs/client@1.25.0/dist/lib.iife.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@anam-ai/js-sdk@4.27.0/dist/umd/anam.js"></script>
+<script>
+(() => {
+  /* ------------------------------------------------------------------
+     Configuration
+     Agent ID is resolved in this order, so nothing is hardcoded:
+       1. ?agent=... in the page URL
+       2. data-agent-id on <body> (set this when you put the page live)
+       3. the ID saved in this browser from the setup box
+     Optional: data-token-endpoint on <body> pointing at a Worker that
+     returns { "token": "..." } for private agents (keeps keys server side).
+  ------------------------------------------------------------------ */
+  const IDLE_VIDEO = "https://vz-1599ac93-05a.b-cdn.net/c05b369d-1529-4051-8773-79320393ec05/play_720p.mp4";
+  const STORE_KEY = "jemima.agentId";
+  const params = new URLSearchParams(location.search);
+
+  const store = {
+    get() { try { return localStorage.getItem(STORE_KEY) || ""; } catch { return ""; } },
+    set(v) { try { localStorage.setItem(STORE_KEY, v); } catch {} }
+  };
+  const agentId = () => params.get("agent") || document.body.dataset.agentId || store.get();
+  const tokenEndpoint = document.body.dataset.tokenEndpoint || "";
+  // When set, Jemima talks through Anam (real-time lip-synced video). The Worker returns { sessionToken }.
+  const anamEndpoint = document.body.dataset.anamEndpoint || "";
+
+  /* ---------- Elements ---------- */
+  const $ = (id) => document.getElementById(id);
+  const stage = $("stage"), idle = $("idle"), anamVideo = $("anamVideo");
+  const badge = $("badge"), badgeText = $("badgeText"), caption = $("caption");
+  const log = $("log"), starters = $("starters");
+  const startBtn = $("startBtn"), startLabel = $("startLabel"), muteBtn = $("muteBtn");
+  const sayForm = $("sayForm"), sayInput = $("sayInput");
+  const setup = $("setup"), agentInput = $("agentInput");
+  const root = document.documentElement;
+
+  /* ---------- Avatar: Jemima's idle video ---------- */
+  idle.src = IDLE_VIDEO;
+
+  let speaking = false;
+  function setSpeaking(on) {
+    speaking = on;
+    stage.classList.toggle("speaking", on);
+  }
+
+  /* ---------- Transcript ---------- */
+  function addMsg(role, text) {
+    const el = document.createElement("div");
+    el.className = "msg " + role;
+    el.textContent = text;
+    log.appendChild(el);
+    log.scrollTop = log.scrollHeight;
+    return el;
+  }
+  let captionTimer = null;
+  function showCaption(text) {
+    caption.textContent = text;
+    caption.classList.add("show");
+    clearTimeout(captionTimer);
+    captionTimer = setTimeout(() => caption.classList.remove("show"), Math.min(12000, 2500 + text.length * 55));
+  }
+
+  /* ---------- State display ---------- */
+  function setStatus(state, label) {
+    badge.dataset.state = state;
+    badgeText.textContent = label;
+  }
+
+  /* ---------- Link cards (client tool show_link: url + label) ---------- */
+  function showLink({ url, label } = {}) {
+    try {
+      const u = new URL(url);
+      if (u.protocol !== "https:") return "Only https links can be shown.";
+      const a = document.createElement("a");
+      a.className = "linkcard";
+      a.href = u.href;
+      a.target = "_blank";
+      a.rel = "noopener";
+      a.textContent = label || u.hostname;
+      log.appendChild(a);
+      log.scrollTop = log.scrollHeight;
+      return "Link shown to the visitor.";
+    } catch { return "That link was not valid."; }
+  }
+  const clean = (t) => (t || "").replace(/\[[^\]]*\]\s*/g, "").trim();
+
+  /* ---------- Anam: lip-synced video of Jemima, voice and brain stay in ElevenLabs ---------- */
+  anamVideo.addEventListener("loadedmetadata", () => {
+    const r = anamVideo.videoWidth / Math.max(1, anamVideo.videoHeight);
+    anamVideo.classList.toggle("square", r > 0.9 && r < 1.1);
+  });
+
+  async function startAnam() {
+    const r = await fetch(anamEndpoint, { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" });
+    const data = await r.json().catch(() => ({}));
+    if (!r.ok || !data.sessionToken) { console.warn("[anam] session refused", data); throw new Error("anam-session"); }
+
+    const client = anam.createClient(data.sessionToken);
+    const E = anam.AnamEvent;
+    const msgs = new Map();
+    const typed = new Set();
+
+    client.addListener(E.MESSAGE_STREAM_EVENT_RECEIVED, (ev) => {
+      let m = msgs.get(ev.id);
+      if (!m) { m = { text: "", el: null }; msgs.set(ev.id, m); }
+      m.text += ev.content || "";
+      const text = clean(m.text);
+      const isAgent = ev.role === "persona";
+      if (isAgent) {
+        setSpeaking(true);
+        setStatus("connected", "Jemima is speaking");
+        if (text) showCaption(text);
+      } else if (typed.has(text)) {
+        return;                                   // already shown when it was typed
+      }
+      if (text) {
+        if (!m.el) m.el = addMsg(isAgent ? "agent" : "user", text);
+        else m.el.textContent = text;
+        log.scrollTop = log.scrollHeight;
+      }
+      if (isAgent && (ev.endOfSpeech || ev.interrupted)) {
+        setSpeaking(false);
+        setStatus("connected", "Listening");
+      }
+    });
+    client.addListener(E.VIDEO_PLAY_STARTED, () => { stage.classList.add("anam"); setStatus("connected", "Live"); });
+    client.addListener(E.MIC_PERMISSION_DENIED, () => addMsg("note", "Microphone access was blocked. Allow it in your browser's address bar, or type your question below."));
+    client.addListener(E.CONNECTION_CLOSED, (code, details) => {
+      if (code && !String(code).endsWith("NORMAL")) { console.warn("[anam] closed", code, details); addMsg("note", "The video call ended. Tap Start talking to reconnect."); }
+      endUi();
+    });
+    client.registerToolCallHandler("show_link", { onStart: async (p) => showLink(p.arguments || {}) });
+
+    await client.streamToVideoElement("anamVideo");
+    return {
+      setMicMuted: (m) => (m ? client.muteInputAudio() : client.unmuteInputAudio()),
+      sendUserMessage: (t) => { typed.add(clean(t)); client.sendUserMessage(t); },
+      endSession: () => client.stopStreaming(),
+      getOutputVolume: () => 0,
+      getInputVolume: () => 0
+    };
+  }
+
+  /* ---------- Conversation ---------- */
+  let conv = null;
+  let rafId = 0;
+  let pendingText = "";
+
+  function meter() {
+    if (!conv) return;
+    try {
+      const out = Math.min(1, conv.getOutputVolume() * 1.8);
+      const mic = Math.min(1, conv.getInputVolume() * 2.2);
+      root.style.setProperty("--vol", out.toFixed(3));
+      root.style.setProperty("--mic", mic.toFixed(3));
+    } catch {}
+    rafId = requestAnimationFrame(meter);
+  }
+
+  async function sessionOptions(id) {
+    const base = {
+      connectionType: "webrtc",
+      dynamicVariables: { page_url: location.href },
+      clientTools: {
+        // Declare this tool on the agent as a client tool with params url + label.
+        show_link: (args) => showLink(args)
+      },
+      onConnect: () => setStatus("connected", "Live"),
+      onDisconnect: () => endUi(),
+      onError: (message) => { addMsg("note", "Something went wrong: " + message); },
+      onModeChange: ({ mode }) => {
+        setSpeaking(mode === "speaking");
+        if (conv) setStatus("connected", mode === "speaking" ? "Jemima is speaking" : "Listening");
+      },
+      onMessage: ({ role, message }) => {
+        message = clean(message);
+        if (!message) return;
+        if (role === "agent") { addMsg("agent", message); showCaption(message); }
+        else addMsg("user", message);
+      }
+    };
+    if (tokenEndpoint) {
+      const r = await fetch(tokenEndpoint, { method: "POST" });
+      if (!r.ok) throw new Error("Could not start a secure session.");
+      const { token } = await r.json();
+      return { ...base, conversationToken: token };
+    }
+    return { ...base, agentId: id };
+  }
+
+  async function start(initialText) {
+    if (conv) return;
+    const id = agentId();
+    if (!anamEndpoint && !id && !tokenEndpoint) { showSetup(); return; }
+    pendingText = initialText || "";
+    starters.remove();
+    startBtn.disabled = true;
+    startLabel.textContent = "Connecting";
+    setStatus("connecting", "Connecting");
+    idle.play().catch(() => {});
+    try {
+      // Ask for the mic first so the browser prompt appears straight away.
+      const probe = await navigator.mediaDevices.getUserMedia({ audio: true });
+      probe.getTracks().forEach((t) => t.stop());
+      if (anamEndpoint) {
+        try { conv = await startAnam(); }
+        catch (e) {
+          // If the video service is unavailable (for example the monthly minutes are used up), fall back to voice only.
+          if (!id && !tokenEndpoint) throw e;
+          console.warn("[anam] falling back to voice only", e);
+        }
+      }
+      if (!conv) conv = await ElevenLabsClient.Conversation.startSession(await sessionOptions(id));
+      startBtn.disabled = false;
+      startBtn.classList.add("end");
+      startLabel.textContent = "End conversation";
+      muteBtn.hidden = false;
+      if (pendingText) { conv.sendUserMessage(pendingText); addMsg("user", pendingText); pendingText = ""; }
+      meter();
+    } catch (err) {
+      conv = null;
+      const denied = err && (err.name === "NotAllowedError" || err.name === "SecurityError");
+      addMsg("note", denied
+        ? "Microphone access was blocked. Allow it in your browser's address bar, or type your question below."
+        : "Couldn't connect just now. Please try again.");
+      endUi();
+    }
+  }
+
+  async function stop() {
+    const c = conv;
+    if (!c) return;
+    try { await c.endSession(); } catch {}
+    endUi();
+  }
+
+  function endUi() {
+    conv = null;
+    stage.classList.remove("anam");
+    cancelAnimationFrame(rafId);
+    root.style.setProperty("--vol", 0);
+    root.style.setProperty("--mic", 0);
+    setSpeaking(false);
+    setStatus("disconnected", "Ready to talk");
+    startBtn.disabled = false;
+    startBtn.classList.remove("end");
+    startLabel.textContent = "Start talking";
+    muteBtn.hidden = true;
+    muteBtn.setAttribute("aria-pressed", "false");
+  }
+
+  /* ---------- Wiring ---------- */
+  startBtn.addEventListener("click", () => (conv ? stop() : start()));
+
+  muteBtn.addEventListener("click", () => {
+    if (!conv) return;
+    const muted = muteBtn.getAttribute("aria-pressed") !== "true";
+    conv.setMicMuted(muted);
+    muteBtn.setAttribute("aria-pressed", String(muted));
+    muteBtn.setAttribute("aria-label", muted ? "Unmute microphone" : "Mute microphone");
+  });
+
+  starters.addEventListener("click", (e) => {
+    const b = e.target.closest("button");
+    if (b) start(b.textContent);
+  });
+
+  sayForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const text = sayInput.value.trim();
+    if (!text) return;
+    sayInput.value = "";
+    if (conv) { conv.sendUserMessage(text); addMsg("user", text); }
+    else start(text);
+  });
+
+  function showSetup() {
+    setup.hidden = false;
+    agentInput.value = store.get();
+    agentInput.focus();
+  }
+  $("saveAgent").addEventListener("click", () => {
+    const v = agentInput.value.trim();
+    if (!v) return;
+    store.set(v);
+    setup.hidden = true;
+    addMsg("note", "Agent saved. Tap Start talking.");
+  });
+
+  window.addEventListener("pagehide", () => { if (conv) conv.endSession(); });
+})();
+</script>
+</body>
+</html>
