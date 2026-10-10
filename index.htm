@@ -1270,6 +1270,10 @@
                             <span><i class="fas fa-play-circle mr-3 text-[#c2155a] opacity-60 group-hover:opacity-100"></i>How can you help me?</span>
                             <i class="fas fa-chevron-right text-xs opacity-20"></i>
                         </button>
+                        <button onclick="playVideoAnswer('safety', this)" class="w-full py-3 md:py-4 text-[12px] md:text-[14px] bg-white border border-slate-100 text-slate-800 hover:border-[#c2155a]/30 hover:bg-slate-50 transition-all uppercase tracking-widest text-left px-4 shadow-sm active:scale-[0.98] flex items-center justify-between group">
+                            <span><i class="fas fa-shield-halved mr-3 text-[#c2155a] opacity-60 group-hover:opacity-100"></i>Is it safe?</span>
+                            <i class="fas fa-chevron-right text-xs opacity-20"></i>
+                        </button>
                     </div>
                 </div>
 
@@ -1709,7 +1713,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const messages = {
     whatworkflows: ["I usually begin before John starts work by triaging his email and preparing a prioritised schedule.", "During the day I help with calls, notes, messages, calendar changes and follow-up so important work keeps moving."],
     peoplecontrol: ["I help John triage email, take appropriate calls, prepare notes, manage his schedule, draft content and keep follow-up moving.", "John reviews important outputs and handles anything that needs his experience or judgement."],
-    freereview: ["John built me because he was fascinated by the idea that AI could become more than a text box.", "Building and using me has taught him about conversational interfaces, structured outputs, safeguards and practical workflow automation."]
+    freereview: ["John built me because he was fascinated by the idea that AI could become more than a text box.", "Building and using me has taught him about conversational interfaces, structured outputs, safeguards and practical workflow automation."],
+    safety: ["Safety matters. I’m designed to help with defined tasks and follow the instructions and safeguards configured for each workflow.", "AI can still make mistakes, so important decisions and sensitive actions should be checked by a person. Access to information and connected tools should be limited to what’s needed."]
 };
             addMessages(messages[type] || ["I can certainly help with that."]);
         }
