@@ -1178,12 +1178,33 @@
     <main class="max-w-[1200px] mx-auto px-4 lg:px-6 pt-5 lg:pt-4 pb-8 lg:pb-16">
         <div class="flex flex-col items-center space-y-4 lg:space-y-8 mb-6 lg:mb-12 hero-page-stack">
             <div class="max-w-4xl text-center space-y-3 hero-copy-block">
-                <p class="text-sm md:text-base font-semibold tracking-wide text-[#c2155a] mb-1">Meet Jemima — your AI assistant</p>
+                <p class="text-xs md:text-sm font-medium uppercase tracking-wider text-slate-500 mb-1">Your AI assistant</p>
+                <p class="text-sm md:text-base font-semibold tracking-wide text-[#c2155a] mb-1">Meet Jemima</p>
                 <h1 id="hero-industry-h1" class="text-3xl md:text-4xl lg:text-6xl font-[700] leading-tight text-slate-950 tracking-tight hero-industry-title" data-default-h1="Every conversation, taken care of.">
                     <span class="hero-h1-line">Every conversation,</span>
                     <span class="hero-h1-line text-[#c2155a]">taken care of.</span>
                 </h1>
                 <p class="max-w-4xl mx-auto text-slate-600 text-base md:text-lg leading-relaxed font-medium hero-industry-subtitle">From answering calls and messages to helping visitors on your website, Jemima helps you stay responsive, look professional and make every interaction count.</p>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3 w-full mt-4" aria-label="Ways to connect with Jemima">
+                    <div class="flex flex-col items-center justify-center gap-2 rounded-xl bg-slate-50 p-4 md:p-5 text-slate-900">
+                        <i class="fa-regular fa-comment text-2xl" aria-hidden="true"></i><span class="font-semibold">Chat</span>
+                    </div>
+                    <div class="flex flex-col items-center justify-center gap-2 rounded-xl bg-slate-50 p-4 md:p-5 text-slate-900">
+                        <i class="fa-solid fa-phone text-2xl" aria-hidden="true"></i><span class="font-semibold">Phone</span>
+                    </div>
+                    <div class="flex flex-col items-center justify-center gap-2 rounded-xl bg-slate-50 p-4 md:p-5 text-slate-900">
+                        <i class="fa-solid fa-video text-2xl" aria-hidden="true"></i><span class="font-semibold">Video &amp; voice</span>
+                    </div>
+                    <div class="flex flex-col items-center justify-center gap-2 rounded-xl bg-slate-50 p-4 md:p-5 text-slate-900">
+                        <i class="fa-regular fa-envelope text-2xl" aria-hidden="true"></i><span class="font-semibold">Messages</span>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-3 mt-4">
+                    <a href="#video-container" onclick="activateAI('main')" class="inline-flex items-center justify-center rounded-lg bg-[#c2155a] px-6 py-3 font-semibold text-white transition-colors hover:bg-[#a0124a]">Talk to Jemima</a>
+                    <a href="#ask-me-about-work" class="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-6 py-3 font-semibold text-slate-900 transition-colors hover:border-[#c2155a] hover:text-[#c2155a]">See what I can do</a>
+                </div>
 
 
 
