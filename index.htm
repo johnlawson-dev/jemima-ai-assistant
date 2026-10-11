@@ -1397,6 +1397,102 @@
             })();
         </script>
 
+        <section id="connected-conversations" class="jemima-content-rail py-12 lg:py-16 border-t border-slate-200 px-4 lg:px-6">
+            <div class="max-w-5xl mx-auto">
+                <div class="text-center mb-10">
+                    <div class="inline-block bg-[#c2155a]/10 text-[#c2155a] text-[11px] px-4 py-1.5 uppercase tracking-[0.2em] mb-4">Connected conversations</div>
+                    <h2 class="text-3xl md:text-4xl font-semibold tracking-tight text-slate-900 mb-4">One assistant. Connected conversations.</h2>
+                    <p class="text-slate-600 leading-relaxed max-w-3xl mx-auto">An enquiry can start in one place and continue into the next step. Jemima brings a consistent experience across channels, while connected tools help keep the work moving.</p>
+                </div>
+                <div class="connected-layout">
+                    <div class="connected-steps" role="group" aria-label="How a connected conversation works">
+                        <button type="button" class="connected-step is-active" data-connected-step="arrive" aria-pressed="true">
+                            <span class="connected-step-number">01</span>
+                            <span class="connected-step-copy"><strong>An enquiry arrives</strong><small>Phone, website chat, video or messages</small></span>
+                            <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                        </button>
+                        <button type="button" class="connected-step" data-connected-step="respond" aria-pressed="false">
+                            <span class="connected-step-number">02</span>
+                            <span class="connected-step-copy"><strong>Jemima responds</strong><small>Using available information and instructions</small></span>
+                            <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                        </button>
+                        <button type="button" class="connected-step" data-connected-step="next" aria-pressed="false">
+                            <span class="connected-step-number">03</span>
+                            <span class="connected-step-copy"><strong>The next step is handled</strong><small>Capture details, pass them on or trigger a workflow</small></span>
+                            <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                    <div class="connected-detail" aria-live="polite" aria-atomic="true">
+                        <div class="connected-detail-top"><span class="connected-pulse"></span><span id="connected-detail-label">Step 1 · The first touchpoint</span></div>
+                        <h3 id="connected-detail-title">Meet people where they reach out.</h3>
+                        <p id="connected-detail-description">A customer might call, open the website chat or start a video conversation. Jemima gives them a clear place to begin instead of leaving them unsure what to do next.</p>
+                        <div class="connected-example">
+                            <i class="fas fa-comment-dots" aria-hidden="true"></i>
+                            <p id="connected-detail-example">“Hi, I'm Jemima. How can I help you today?”</p>
+                        </div>
+                        <p class="connected-note">The exact journey depends on the channels, information and integrations configured for each business.</p>
+                    </div>
+                </div>
+                <div class="connected-channel-row" aria-label="Conversation channels">
+                    <span><i class="fas fa-phone" aria-hidden="true"></i> Phone</span>
+                    <span><i class="fas fa-comments" aria-hidden="true"></i> Website chat</span>
+                    <span><i class="fas fa-video" aria-hidden="true"></i> Video &amp; voice</span>
+                    <span><i class="fas fa-envelope" aria-hidden="true"></i> Email &amp; messages</span>
+                </div>
+            </div>
+        </section>
+        <style>
+            #connected-conversations .connected-layout{display:grid;grid-template-columns:.92fr 1.08fr;gap:18px;align-items:stretch}
+            #connected-conversations .connected-steps{display:flex;flex-direction:column;gap:10px}
+            #connected-conversations .connected-step{display:flex;align-items:center;gap:14px;width:100%;padding:18px;text-align:left;background:#fff;border:1px solid #e2e8f0;border-radius:12px;color:#0f172a;cursor:pointer;transition:border-color .18s,background .18s,transform .18s}
+            #connected-conversations .connected-step:hover,#connected-conversations .connected-step:focus-visible{border-color:#c2155a;outline:2px solid #c2155a;outline-offset:2px}
+            #connected-conversations .connected-step.is-active{border-color:#c2155a;background:#c2155a08;box-shadow:0 0 0 1px #c2155a inset}
+            #connected-conversations .connected-step-number{display:flex;align-items:center;justify-content:center;flex:0 0 40px;width:40px;height:40px;border-radius:50%;background:#f1f5f9;color:#64748b;font-size:13px;font-weight:700}
+            #connected-conversations .connected-step.is-active .connected-step-number{background:#c2155a;color:#fff}
+            #connected-conversations .connected-step-copy{display:flex;flex:1;flex-direction:column;gap:5px}
+            #connected-conversations .connected-step-copy strong{font-size:15px;font-weight:600}
+            #connected-conversations .connected-step-copy small{font-size:12px;line-height:1.5;color:#64748b}
+            #connected-conversations .connected-step>i{font-size:12px;color:#c2155a}
+            #connected-conversations .connected-detail{display:flex;flex-direction:column;justify-content:center;min-height:300px;padding:30px;border-radius:14px;background:#0f172a;color:#fff;position:relative;overflow:hidden}
+            #connected-conversations .connected-detail:after{content:"";position:absolute;width:190px;height:190px;border-radius:50%;right:-85px;top:-85px;background:#c2155a24;pointer-events:none}
+            #connected-conversations .connected-detail-top{display:flex;align-items:center;gap:9px;margin-bottom:22px;color:#f9a8d4;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+            #connected-conversations .connected-pulse{width:8px;height:8px;border-radius:50%;background:#f472b6;box-shadow:0 0 0 4px #c2155a30}
+            #connected-conversations .connected-detail h3{font-size:25px;line-height:1.25;letter-spacing:-.025em;font-weight:600;margin-bottom:13px;position:relative;z-index:1}
+            #connected-conversations .connected-detail>p:not(.connected-note){font-size:14px;line-height:1.75;color:#cbd5e1;position:relative;z-index:1}
+            #connected-conversations .connected-example{display:flex;align-items:flex-start;gap:12px;padding:15px;margin-top:22px;border:1px solid #ffffff20;border-radius:10px;background:#ffffff08;position:relative;z-index:1}
+            #connected-conversations .connected-example i{color:#f472b6;margin-top:4px}
+            #connected-conversations .connected-example p{font-size:14px;line-height:1.65;color:#fff}
+            #connected-conversations .connected-note{font-size:11px;line-height:1.6;color:#94a3b8;margin-top:18px;position:relative;z-index:1}
+            #connected-conversations .connected-channel-row{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin-top:22px}
+            #connected-conversations .connected-channel-row span{display:flex;align-items:center;gap:8px;padding:9px 12px;border:1px solid #e2e8f0;border-radius:999px;font-size:12px;color:#475569}
+            #connected-conversations .connected-channel-row i{color:#c2155a}
+            @media(max-width:700px){#connected-conversations .connected-layout{grid-template-columns:1fr}#connected-conversations .connected-step{padding:15px}#connected-conversations .connected-detail{min-height:0;padding:23px}#connected-conversations .connected-detail h3{font-size:22px}#connected-conversations .connected-channel-row{justify-content:flex-start}}
+        </style>
+        <script>
+            (() => {
+                const steps = {
+                    arrive: { label: "Step 1 · The first touchpoint", title: "Meet people where they reach out.", description: "A customer might call, open the website chat or start a video conversation. Jemima gives them a clear place to begin instead of leaving them unsure what to do next.", example: "“Hi, I'm Jemima. How can I help you today?”" },
+                    respond: { label: "Step 2 · A useful response", title: "Give a consistent, informed first response.", description: "Jemima can use the business information and instructions available to the configured workflow to answer common questions, clarify what someone needs and collect relevant details.", example: "“I can help with that. Could you tell me a little more about what you need?”" },
+                    next: { label: "Step 3 · Keep things moving", title: "Turn the conversation into a next step.", description: "Where integrations are configured, details can be passed to a team member or connected workflow for follow-up. Important decisions and sensitive actions can stay with a person.", example: "“I've captured the key details so the right person can follow up.”" }
+                };
+                document.querySelectorAll("#connected-conversations [data-connected-step]").forEach(button => {
+                    button.addEventListener("click", () => {
+                        const item = steps[button.dataset.connectedStep];
+                        if (!item) return;
+                        document.querySelectorAll("#connected-conversations [data-connected-step]").forEach(step => {
+                            const selected = step === button;
+                            step.classList.toggle("is-active", selected);
+                            step.setAttribute("aria-pressed", String(selected));
+                        });
+                        document.getElementById("connected-detail-label").textContent = item.label;
+                        document.getElementById("connected-detail-title").textContent = item.title;
+                        document.getElementById("connected-detail-description").textContent = item.description;
+                        document.getElementById("connected-detail-example").textContent = item.example;
+                    });
+                });
+            })();
+        </script>
+
         <section id="what-i-do" class="jemima-content-rail py-12 lg:py-16 border-t border-slate-200">
             <div class="grid md:grid-cols-2 gap-12 items-center">
                 <div class="space-y-6">
