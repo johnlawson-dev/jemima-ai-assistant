@@ -1308,6 +1308,95 @@
         </div>
 
 
+        <section id="use-cases" class="jemima-content-rail py-12 lg:py-16 border-t border-slate-200 px-4 lg:px-6">
+            <div class="max-w-4xl mx-auto">
+                <div class="text-center mb-10">
+                    <div class="inline-block bg-[#c2155a]/10 text-[#c2155a] text-[11px] px-4 py-1.5 uppercase tracking-[0.2em] mb-4">Use cases</div>
+                    <h2 class="text-3xl md:text-4xl font-semibold tracking-tight text-slate-900 mb-4">Where could Jemima help you?</h2>
+                    <p class="text-slate-600 leading-relaxed max-w-3xl mx-auto">Explore practical ways an AI assistant can help you stay responsive, capture enquiries and keep work moving.</p>
+                </div>
+                <div class="use-case-grid">
+                    <button type="button" class="use-case-card is-selected" data-use-case="calls" aria-expanded="true">
+                        <i class="fas fa-phone-volume" aria-hidden="true"></i><span>Missed calls</span><small>Be there when you can't pick up</small>
+                    </button>
+                    <button type="button" class="use-case-card" data-use-case="website" aria-expanded="false">
+                        <i class="fas fa-comments" aria-hidden="true"></i><span>Website enquiries</span><small>Answer questions and capture leads</small>
+                    </button>
+                    <button type="button" class="use-case-card" data-use-case="video" aria-expanded="false">
+                        <i class="fas fa-video" aria-hidden="true"></i><span>Video conversations</span><small>Make online interactions personal</small>
+                    </button>
+                    <button type="button" class="use-case-card" data-use-case="email" aria-expanded="false">
+                        <i class="fas fa-envelope" aria-hidden="true"></i><span>Email enquiries</span><small>Help organise incoming questions</small>
+                    </button>
+                    <button type="button" class="use-case-card" data-use-case="afterhours" aria-expanded="false">
+                        <i class="fas fa-moon" aria-hidden="true"></i><span>Out-of-hours</span><small>Respond when your team is away</small>
+                    </button>
+                    <button type="button" class="use-case-card" data-use-case="followup" aria-expanded="false">
+                        <i class="fas fa-diagram-project" aria-hidden="true"></i><span>Follow-up workflows</span><small>Move enquiries to the next step</small>
+                    </button>
+                </div>
+                <div id="use-case-detail" class="use-case-detail" aria-live="polite" aria-atomic="true">
+                    <div class="use-case-detail-copy">
+                        <p class="use-case-kicker">A common situation</p>
+                        <h3 id="use-case-detail-title">A customer calls while you're busy</h3>
+                        <p id="use-case-detail-description">Jemima can answer using the phone workflow you've configured, gather the caller's details and help make sure the enquiry isn't lost.</p>
+                        <div class="use-case-flow"><span><b>01</b> Enquiry arrives</span><i class="fas fa-arrow-right" aria-hidden="true"></i><span><b>02</b> Jemima responds</span><i class="fas fa-arrow-right" aria-hidden="true"></i><span><b>03</b> Details captured</span></div>
+                    </div>
+                    <div class="use-case-example">
+                        <div class="flex items-center gap-2 mb-4"><span class="use-case-status-dot"></span><span class="text-sm font-semibold text-slate-900">Example interaction</span></div>
+                        <p class="use-case-quote" id="use-case-example">“Thanks for calling. I can take a few details and make sure your enquiry reaches the right person.”</p>
+                        <p class="text-xs text-slate-500 mt-4">Illustrative example — actual responses depend on the workflow and information configured.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <style>
+            #use-cases .use-case-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+            #use-cases .use-case-card{display:flex;flex-direction:column;align-items:flex-start;text-align:left;gap:9px;padding:20px;border:1px solid #e2e8f0;background:#fff;color:#0f172a;border-radius:12px;cursor:pointer;transition:border-color .18s,background .18s,transform .18s;min-height:132px}
+            #use-cases .use-case-card:hover,#use-cases .use-case-card:focus-visible{border-color:#c2155a;outline:none}
+            #use-cases .use-case-card:hover{transform:translateY(-2px)}
+            #use-cases .use-case-card.is-selected{border-color:#c2155a;background:#c2155a08;box-shadow:0 0 0 1px #c2155a inset}
+            #use-cases .use-case-card i{font-size:22px;color:#c2155a}
+            #use-cases .use-case-card span{font-weight:600;font-size:15px}
+            #use-cases .use-case-card small{font-size:13px;line-height:1.45;color:#64748b}
+            #use-cases .use-case-detail{display:grid;grid-template-columns:1.1fr .9fr;gap:28px;margin-top:18px;padding:28px;border:1px solid #e2e8f0;border-radius:14px;background:#f8fafc}
+            #use-cases .use-case-kicker{font-size:11px;text-transform:uppercase;letter-spacing:.16em;color:#c2155a;font-weight:700;margin-bottom:10px}
+            #use-cases .use-case-detail h3{font-size:23px;line-height:1.25;font-weight:600;letter-spacing:-.02em;color:#0f172a;margin-bottom:12px}
+            #use-cases .use-case-detail-copy>p:not(.use-case-kicker){font-size:15px;line-height:1.7;color:#475569}
+            #use-cases .use-case-flow{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:22px;font-size:12px;color:#475569}
+            #use-cases .use-case-flow b{color:#c2155a;margin-right:4px}
+            #use-cases .use-case-example{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:20px;align-self:stretch}
+            #use-cases .use-case-status-dot{width:8px;height:8px;border-radius:50%;background:#10b981;display:inline-block}
+            #use-cases .use-case-quote{font-size:16px;line-height:1.7;color:#334155}
+            @media(max-width:700px){#use-cases .use-case-grid{grid-template-columns:repeat(2,minmax(0,1fr))}#use-cases .use-case-card{padding:15px;min-height:128px}#use-cases .use-case-detail{grid-template-columns:1fr;padding:20px;gap:18px}#use-cases .use-case-detail h3{font-size:21px}#use-cases .use-case-flow{gap:8px}}
+        </style>
+        <script>
+            (() => {
+                const useCases = {
+                    calls: { title: "A customer calls while you're busy", description: "Jemima can answer using the phone workflow you've configured, gather the caller's details and help make sure the enquiry isn't lost.", quote: "“Thanks for calling. I can take a few details and make sure your enquiry reaches the right person.”" },
+                    website: { title: "A visitor has a question on your website", description: "Jemima can respond to common questions, help visitors understand your services and collect useful enquiry details through the configured chat experience.", quote: "“I can help with that. Could you tell me a little about what you're looking for so I can point you in the right direction?”" },
+                    video: { title: "A visitor wants a more personal conversation", description: "Visitors can interact with Jemima through the live video and voice experience, rather than relying only on a static page or form.", quote: "“Hi, I'm Jemima. Tell me what you'd like help with and we'll take it from there.”" },
+                    email: { title: "An enquiry arrives by email", description: "With an email integration configured, an assistant workflow can help organise incoming questions, prepare a response or route key details to the right place.", quote: "“I've identified the main question and the details that may need a reply. Here's a draft for review.”" },
+                    afterhours: { title: "Someone gets in touch outside business hours", description: "A configured phone or website workflow can provide a first response when your team is unavailable and capture information for the next working day.", quote: "“We're currently away, but I can take your details and record what you need help with.”" },
+                    followup: { title: "An enquiry needs a clear next step", description: "Connected workflows can pass captured details to the tools you use, helping organise follow-up tasks. The exact actions depend on the integrations you enable.", quote: "“I've captured the key details. The next step is to pass this enquiry into the follow-up process you've configured.”" }
+                };
+                document.querySelectorAll("#use-cases [data-use-case]").forEach(button => {
+                    button.addEventListener("click", () => {
+                        const item = useCases[button.dataset.useCase];
+                        if (!item) return;
+                        document.querySelectorAll("#use-cases [data-use-case]").forEach(card => {
+                            const selected = card === button;
+                            card.classList.toggle("is-selected", selected);
+                            card.setAttribute("aria-expanded", String(selected));
+                        });
+                        document.getElementById("use-case-detail-title").textContent = item.title;
+                        document.getElementById("use-case-detail-description").textContent = item.description;
+                        document.getElementById("use-case-example").textContent = item.quote;
+                    });
+                });
+            })();
+        </script>
+
         <section id="what-i-do" class="jemima-content-rail py-12 lg:py-16 border-t border-slate-200">
             <div class="grid md:grid-cols-2 gap-12 items-center">
                 <div class="space-y-6">
