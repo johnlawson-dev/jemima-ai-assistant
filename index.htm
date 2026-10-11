@@ -1295,7 +1295,7 @@
                         </div>
                         <div class="border-t border-slate-300 pt-4 mt-2 shrink-0 space-y-3">
                             <form id="chat-input-form" onsubmit="handleChatSubmit(event)" class="flex gap-2">
-                                <input type="text" id="user-chat-input" placeholder="Type a question..." class="flex-grow bg-slate-50 border border-slate-200 text-sm md:text-base font-semibold px-4 py-3 outline-none focus:border-[#c2155a] transition-colors rounded-sm">
+                                <input type="text" id="user-chat-input" placeholder="Type here..." class="flex-grow bg-slate-50 border border-slate-200 text-sm md:text-base font-normal px-4 py-3 outline-none focus:border-[#c2155a] transition-colors rounded-sm">
                                 <button type="submit" class="bg-[#c2155a] text-white w-12 flex items-center justify-center shadow-lg shadow-[#c2155a]/20 hover:bg-[#a0124a] transition-colors">
                                     <i class="fas fa-paper-plane"></i>
                                 </button>
@@ -1521,6 +1521,11 @@
         };
 
 document.addEventListener('DOMContentLoaded', () => {
+            // Focus the chat input on desktop only; leave mobile keyboards closed.
+            if (window.matchMedia('(min-width: 769px)').matches && chatInput) {
+                chatInput.focus({ preventScroll: true });
+            }
+
             // 0. Pre-fill the review form for returning visitors (functional cookie).
             try { prefillReviewForm(); } catch(e){}
 
