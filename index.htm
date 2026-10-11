@@ -1639,7 +1639,7 @@
     <!-- Calendly discovery-call modal -->
     <div id="booking-modal" class="fixed inset-0 z-[60] hidden items-center justify-center p-3 sm:p-6" role="dialog" aria-modal="true" aria-labelledby="booking-modal-title" aria-hidden="true">
         <button type="button" class="absolute inset-0 bg-slate-900/60" onclick="closeBookingModal()" aria-label="Close booking window"></button>
-        <div class="relative z-10 flex w-full max-w-3xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl" style="height:min(600px,84vh);">
+        <div class="relative z-10 flex w-full max-w-xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl" style="height:min(600px,84vh);">
             <div class="flex items-center justify-between gap-4 border-b border-slate-100 px-5 py-4 sm:px-7">
                 <div>
                     <p class="text-xs font-semibold uppercase tracking-widest text-[#c2155a]">Jemima AI</p>
@@ -1649,7 +1649,7 @@
                 <button type="button" onclick="closeBookingModal()" class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-slate-600 hover:bg-slate-50" aria-label="Close booking window"><i class="fas fa-times" aria-hidden="true"></i></button>
             </div>
             <div class="min-h-0 flex-1 overflow-hidden" style="min-height:0;">
-                <div class="calendly-inline-widget" data-url="https://calendly.com/jemima-ai-assistant/30min?hide_gdpr_banner=1" style="width:100%;height:440px;min-width:320px;"></div>
+                <div class="calendly-inline-widget" data-url="https://calendly.com/jemima-ai-assistant/30min?hide_gdpr_banner=1&amp;hide_event_type_details=1" data-resize="true" style="width:100%;height:440px;min-width:320px;"></div>
             </div>
             <div class="border-t border-slate-100 px-5 py-3 text-center text-xs text-slate-500">
                 Calendar not loading? <a href="https://calendly.com/jemima-ai-assistant/30min" target="_blank" rel="noopener noreferrer" class="font-semibold text-[#c2155a] underline">Open Calendly in a new tab</a>.
