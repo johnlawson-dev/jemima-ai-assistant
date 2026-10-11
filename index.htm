@@ -1141,38 +1141,11 @@
 
 
     <nav class="flex items-center justify-between gap-3 px-4 lg:px-12 py-4 lg:py-5 bg-white/80 backdrop-blur-md border-b border-slate-300 sticky top-0 z-50">
-        <div class="flex items-center min-w-0">
-            <div class="flex items-center gap-2 text-lg lg:text-xl tracking-tighter cursor-pointer shrink-0" onclick="window.location.reload()">
-                <img src="https://jemima.ai/img/jemima-logo.png" alt="Jemima Logo" class="w-6 h-6 lg:w-7 lg:h-7 rounded-full shadow-sm">
-                <span>Jemima</span>
-            </div>
-        </div>
-
-        <div class="flex items-center justify-end min-w-0">
-            <!-- CONTACT LINKS: replace the email and phone values with Jemima's live details. -->
-            <div aria-label="Contact Jemima" class="flex items-center gap-1.5 sm:gap-2">
-                <a href="mailto:jemima@jemima.ai" aria-label="Email Jemima" title="Email me" class="w-10 h-10 sm:w-11 sm:h-11 lg:w-12 lg:h-12 border border-slate-200 bg-white text-slate-700 hover:border-[#c2155a] hover:text-[#c2155a] transition-colors flex items-center justify-center">
-                    <svg aria-hidden="true" viewBox="0 0 24 24" width="24" height="24" fill="currentColor" focusable="false">
-                        <path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm0 4-8 5-8-5V6l8 5 8-5v2Z"></path>
-                    </svg>
-                </a>
-                <a href="tel:+447429669381" aria-label="Phone Jemima" title="Phone me" class="w-10 h-10 sm:w-11 sm:h-11 lg:w-12 lg:h-12 border border-slate-200 bg-white text-slate-700 hover:border-[#c2155a] hover:text-[#c2155a] transition-colors flex items-center justify-center">
-                    <svg aria-hidden="true" viewBox="0 0 24 24" width="24" height="24" fill="currentColor" focusable="false">
-                        <path d="M6.62 10.79a15.46 15.46 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.61 21 3 13.39 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1.02l-2.2 2.2Z"></path>
-                    </svg>
-                </a>
-                <a href="sms:+447429669381" aria-label="Send Jemima an SMS" title="SMS me" class="w-10 h-10 sm:w-11 sm:h-11 lg:w-12 lg:h-12 border border-slate-200 bg-white text-slate-700 hover:border-[#c2155a] hover:text-[#c2155a] transition-colors flex items-center justify-center">
-                    <svg aria-hidden="true" viewBox="0 0 24 24" width="24" height="24" fill="currentColor" focusable="false">
-                        <path d="M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2ZM7 11.5A1.5 1.5 0 1 1 7 8a1.5 1.5 0 0 1 0 3.5Zm5 0A1.5 1.5 0 1 1 12 8a1.5 1.5 0 0 1 0 3.5Zm5 0A1.5 1.5 0 1 1 17 8a1.5 1.5 0 0 1 0 3.5Z"></path>
-                    </svg>
-                </a>
-                <a href="https://www.linkedin.com/company/jemima-ai/" target="_blank" rel="noopener noreferrer" aria-label="Follow Jemima on LinkedIn" title="Follow me on LinkedIn" class="w-10 h-10 sm:w-11 sm:h-11 lg:w-12 lg:h-12 border border-slate-200 bg-white text-slate-700 hover:border-[#c2155a] hover:text-[#c2155a] transition-colors flex items-center justify-center">
-                    <svg aria-hidden="true" viewBox="2 2 20 20" width="24" height="24" fill="currentColor" focusable="false">
-                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452z"></path>
-                    </svg>
-                </a>
-            </div>
-        </div>
+        <a href="/" class="flex items-center gap-2 text-lg lg:text-xl tracking-tighter shrink-0" aria-label="Jemima home">
+            <img src="https://jemima.ai/img/jemima-logo.png" alt="Jemima Logo" class="w-6 h-6 lg:w-7 lg:h-7 rounded-full shadow-sm">
+            <span>Jemima</span>
+        </a>
+        <a href="mailto:jemima@jemima.ai?subject=Book%20a%20discovery%20call" class="inline-flex items-center justify-center px-4 sm:px-6 py-3 rounded-lg bg-[#c2155a] text-white text-xs sm:text-sm font-semibold hover:bg-[#a0124a] transition-colors shadow-sm whitespace-nowrap">Book a discovery call</a>
     </nav>
 
     <main class="max-w-[1200px] mx-auto px-4 lg:px-6 pt-5 lg:pt-4 pb-8 lg:pb-16">
@@ -1527,13 +1500,13 @@
                         <div class="flex items-center justify-center w-11 h-11 rounded-full bg-[#c2155a]/10 text-[#c2155a] mb-5"><i class="fas fa-comments text-lg" aria-hidden="true"></i></div>
                         <h3 class="text-lg font-semibold text-slate-900 mb-2">Try a chat</h3>
                         <p class="text-sm leading-relaxed text-slate-600 mb-4">Ask Jemima about the kinds of tasks she can help with.</p>
-                        <span class="text-sm font-semibold text-[#c2155a]">Go to chat <i class="fas fa-arrow-right ml-1" aria-hidden="true"></i></span>
+                        <span class="text-sm font-semibold text-[#c2155a]">Go to chat</span>
                     </a>
                     <a href="#video-container" class="group rounded-xl border border-slate-200 bg-white p-7 transition hover:border-[#c2155a]">
                         <div class="flex items-center justify-center w-11 h-11 rounded-full bg-[#c2155a]/10 text-[#c2155a] mb-5"><i class="fas fa-video text-lg" aria-hidden="true"></i></div>
                         <h3 class="text-lg font-semibold text-slate-900 mb-2">Explore video and voice</h3>
                         <p class="text-sm leading-relaxed text-slate-600 mb-4">See the video interaction area and explore the available example prompts.</p>
-                        <span class="text-sm font-semibold text-[#c2155a]">Explore interaction <i class="fas fa-arrow-right ml-1" aria-hidden="true"></i></span>
+                        <span class="text-sm font-semibold text-[#c2155a]">Explore interaction</span>
                     </a>
                 </div>
                 <p class="text-center text-xs leading-relaxed text-slate-500 mt-5">Please use fictional details in demonstrations rather than sharing sensitive or confidential information.</p>
@@ -1664,8 +1637,9 @@
 
     <footer class="bg-white border-t border-slate-300">
         <div class="jemima-content-rail jemima-footer-inner px-4 lg:px-6 text-center flex flex-col items-center gap-3 lg:gap-4">
-            <p class="max-w-3xl text-sm text-slate-500 leading-relaxed">See how John applies what he has learned to SEO, website analysis and marketing automation.</p>
-            <a href="https://johnlawson.dev/jemima" class="flex items-center justify-center px-6 py-3 bg-[#c2155a] text-white text-[12px] font-black uppercase tracking-widest hover:bg-[#a0124a] transition-colors">About John and Jemima</a>
+            <h2 class="text-2xl md:text-3xl font-semibold tracking-tight text-slate-900">Ready to explore what Jemima could do for your business?</h2>
+            <p class="max-w-3xl text-sm text-slate-600 leading-relaxed">Let us discuss your workflows, the conversations you want to handle and how Jemima could fit your business.</p>
+            <a href="mailto:jemima@jemima.ai?subject=Book%20a%20discovery%20call" class="inline-flex items-center justify-center px-6 py-3 rounded-lg bg-[#c2155a] text-white text-sm font-semibold hover:bg-[#a0124a] transition-colors shadow-sm">Book a discovery call</a>
             <p class="w-full border-t border-slate-100 pt-4 text-xs uppercase tracking-widest text-slate-400">&copy; 2026 Jemima AI. Built, guided and used by John Lawson.</p>
         </div>
     </footer>
