@@ -1641,9 +1641,15 @@
     <style id="calendly-mobile-popup-sizing">
         @media (max-width: 640px) {
             .calendly-overlay .calendly-popup {
+                position: fixed !important;
+                left: 50% !important;
+                right: auto !important;
+                transform: translateX(-50%) !important;
                 width: calc(100vw - 24px) !important;
                 max-width: calc(100vw - 24px) !important;
                 min-width: 0 !important;
+                margin-left: 0 !important;
+                margin-right: 0 !important;
                 box-sizing: border-box !important;
             }
             .calendly-overlay .calendly-popup-content {
