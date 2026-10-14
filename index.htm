@@ -1787,11 +1787,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Keep the chat summary aligned with the video that has just been selected.
             const videoSummaries = {
-                main: "I help your business manage customer conversations across phone calls, website chat, email and messaging. I can respond to enquiries, support follow-up and adapt to your workflows, helping you stay responsive and avoid missing opportunities."
+                main: [
+                    "I help your business manage customer conversations across phone calls, website chat, email and messaging.",
+                    "I can respond to enquiries, support follow-up and adapt to your workflows, helping you stay responsive and avoid missing opportunities."
+                ]
             };
             if (videoSummaries[videoId] && typeof addMessages === 'function') {
                 chatFeed.innerHTML = '';
-                addMessages([videoSummaries[videoId]]);
+                addMessages(videoSummaries[videoId]);
             }
 
             // FIX: Stop any FAQ videos that might be playing in the background
@@ -1894,7 +1897,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const indicator = createTypingIndicator();
                 chatFeed.appendChild(indicator);
                 chatFeed.scrollTop = chatFeed.scrollHeight;
-                await new Promise(r => setTimeout(r, 1200));
+                await new Promise(r => setTimeout(r, 2000));
                 indicator.remove();
                 const msg = document.createElement('div');
                 msg.className = 'bg-[#c2155a]/5 text-slate-800 border border-[#c2155a]/10 px-5 py-4 text-[16px] font-medium leading-relaxed message-anim shadow-sm mb-3 rounded-2xl rounded-tl-none';
