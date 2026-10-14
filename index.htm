@@ -1785,6 +1785,15 @@ document.addEventListener('DOMContentLoaded', () => {
             const videoElement = players[videoId];
             if (!videoElement) return;
 
+            // Keep the chat summary aligned with the video that has just been selected.
+            const videoSummaries = {
+                main: "I help your business manage customer conversations across phone calls, website chat, email and messaging. I can respond to enquiries, support follow-up and adapt to your workflows, helping you stay responsive and avoid missing opportunities."
+            };
+            if (videoSummaries[videoId] && typeof addMessages === 'function') {
+                chatFeed.innerHTML = '';
+                addMessages([videoSummaries[videoId]]);
+            }
+
             // FIX: Stop any FAQ videos that might be playing in the background
             Object.values(faqPlayers).forEach(video => {
                 if (video && !video.paused) {
