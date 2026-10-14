@@ -1801,6 +1801,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     "The aim isn’t to replace the relationships that make your business special.",
                     "It’s to give your team more time to focus on the conversations that matter most.",
                     "Use the chat to tell us more about your business, and let’s explore how Jemima can help make it more responsive."
+                ],
+                safety: [
+                    "To make AI communication safe, start by understanding what information Jemima needs, how it will be used and which systems it connects to.",
+                    "Jemima can be configured around your business processes, with appropriate controls over access, information sharing and when a conversation should be passed to your team.",
+                    "Consider the privacy and security arrangements of connected services, because these can vary depending on how your setup is configured.",
+                    "We believe AI should work with clear boundaries, not operate as a black box.",
+                    "That means being thoughtful about the information you share, the tasks you automate and the decisions that should remain with people."
                 ]
             };
             if (videoSummaries[videoId] && typeof addMessages === 'function') {
@@ -1925,8 +1932,8 @@ document.addEventListener('DOMContentLoaded', () => {
             activateAI(type);
             expandChatWindow(false);
 
-            // The help video uses its transcript summary bubbles instead of the older canned Q&A.
-            if (type === 'whatworkflows') return;
+            // Transcript summary videos use their own bubbles instead of the older canned Q&A.
+            if (type === 'whatworkflows' || type === 'safety') return;
             if (loggedQuestions.has(type)) return;
             loggedQuestions.add(type);
 
