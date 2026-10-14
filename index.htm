@@ -1791,6 +1791,16 @@ document.addEventListener('DOMContentLoaded', () => {
                     "I help your business manage customer conversations across phone calls, website chat, email and messaging.",
                     "I can respond to enquiries, support follow-up and adapt to your workflows.",
                     "Helping you stay responsive and avoid missing opportunities."
+                ],
+                whatworkflows: [
+                    "Perhaps you’re missing calls when the team is busy, or customers ask the same questions every day.",
+                    "Enquiries can arrive through several channels, making them difficult to keep track of.",
+                    "Jemima can handle routine enquiries, answer common questions, capture important details and support follow-up.",
+                    "It can work across phone, website chat, email and messaging, with workflows tailored to your business.",
+                    "You can design processes that bring your team in when a conversation needs human judgement or personal attention.",
+                    "The aim isn’t to replace the relationships that make your business special.",
+                    "It’s to give your team more time to focus on the conversations that matter most.",
+                    "Use the chat to tell us more about your business, and let’s explore how Jemima can help make it more responsive."
                 ]
             };
             if (videoSummaries[videoId] && typeof addMessages === 'function') {
@@ -1915,6 +1925,8 @@ document.addEventListener('DOMContentLoaded', () => {
             activateAI(type);
             expandChatWindow(false);
 
+            // The help video uses its transcript summary bubbles instead of the older canned Q&A.
+            if (type === 'whatworkflows') return;
             if (loggedQuestions.has(type)) return;
             loggedQuestions.add(type);
 
